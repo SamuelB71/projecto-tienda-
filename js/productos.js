@@ -9,11 +9,10 @@ function loadFeaturedProducts() {
     }
     
     console.log('Cargando productos destacados...');
-    console.log('Productos disponibles:', products);
     
     container.innerHTML = '';
     
-    const featuredProducts = products.filter(product => product.featured);
+    const featuredProducts = getFeaturedProducts();
     console.log('Productos destacados filtrados:', featuredProducts);
     
     if (featuredProducts.length === 0) {
@@ -45,7 +44,6 @@ function loadAllProducts() {
     container.innerHTML = '';
     
     // Cargar categorías en el filtro
-    const categories = [...new Set(products.map(product => product.category))];
     const categoryFilter = document.getElementById('category-filter');
     if (categoryFilter) {
         categoryFilter.innerHTML = '<option value="all">Todas las categorías</option>';
@@ -68,18 +66,18 @@ function createProductCard(product) {
         : `<span class="badge bg-danger stock-badge">Sin stock</span>`;
         
     const addButton = product.stock > 0 
-        ? `<button class="btn btn-primary" onclick="addToCart(${product.id})">Agregar al Carrito</button>`
-        : `<button class="btn btn-secondary" disabled>Sin Stock</button>`;
+        ? `<button class="btn btn-primary btn-sm" onclick="addToCart(${product.id})">Agregar</button>`
+        : `<button class="btn btn-secondary btn-sm" disabled>Sin Stock</button>`;
         
     return `
-        <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-            <div class="card product-card h-100">
+        <div class="col-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="card product-card h-100 mx-1">
                 <img src="${product.image}" class="card-img-top product-image" alt="${product.name}" 
                      onerror="this.src='https://via.placeholder.com/300x200?text=Imagen+no+disponible'">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text text-muted">${product.category}</p>
-                    <p class="card-text fw-bold text-primary price-tag">$${product.price.toFixed(2)}</p>
+                <div class="card-body d-flex flex-column p-2">
+                    <h6 class="card-title mb-1">${product.name}</h6>
+                    <small class="text-muted mb-1">${product.brand} - ${product.category}</small>
+                    <p class="card-text fw-bold text-primary price-tag mb-1">$${product.price.toFixed(2)}</p>
                     <div class="mb-2">${stockStatus}</div>
                     <div class="mt-auto">
                         ${addButton}
@@ -88,38 +86,6 @@ function createProductCard(product) {
             </div>
         </div>
     `;
-}
-
-// Agregar al carrito
-function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    
-    if (product && product.stock > 0) {
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            if (existingItem.quantity < product.stock) {
-                existingItem.quantity += 1;
-            } else {
-                showNotification('No hay suficiente stock disponible', 'warning');
-                return;
-            }
-        } else {
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                quantity: 1,
-                image: product.image
-            });
-        }
-        
-        updateCartBadge();
-        saveCartToStorage();
-        showNotification('Producto agregado al carrito', 'success');
-    } else {
-        showNotification('Producto no disponible', 'error');
-    }
 }
 
 // Configurar filtros de búsqueda
@@ -150,11 +116,18 @@ function filterProducts(searchTerm, categoryFilter) {
     
     container.innerHTML = '';
     
-    const filteredProducts = products.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm);
-        const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
-        return matchesSearch && matchesCategory;
-    });
+    let filteredProducts;
+    
+    if (searchTerm) {
+        filteredProducts = searchProducts(searchTerm);
+    } else {
+        filteredProducts = getProductsByCategory(categoryFilter);
+    }
+    
+    // Aplicar filtro de categoría si hay búsqueda
+    if (searchTerm && categoryFilter !== 'all') {
+        filteredProducts = filteredProducts.filter(product => product.category === categoryFilter);
+    }
     
     if (filteredProducts.length === 0) {
         container.innerHTML = `

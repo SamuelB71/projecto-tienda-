@@ -24,4 +24,59 @@
 
 .category-badge {
     font-size: 0.75rem;
-}   
+}
+
+/* Responsive para móviles */
+@media (max-width: 576px) {
+    #products-container .col-md-6,
+    #featured-products .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .product-card {
+        margin: 0 5px 15px 5px;
+    }
+    
+    .product-image {
+        height: 150px;
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+    }
+    
+    .price-tag {
+        font-size: 1rem;
+    }
+    
+    .btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 360px) {
+    #products-container .col-md-6,
+    #featured-products .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .product-image {
+        height: 120px;
+    }
+    
+    .card-body {
+        padding: 8px;
+    }
+    
+    .card-title {
+        font-size: 0.8rem;
+    }
+}

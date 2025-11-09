@@ -75,3 +75,15 @@ body {
 .stock-badge {
     font-size: 0.8rem;
 }
+/* Responsive general para tarjetas de productos */
+@media (max-width: 576px) {
+    .product-card {
+        margin-bottom: 15px;
+    }
+    
+    /* Asegurar que las columnas sean de 50% en móviles */
+    .row .col-md-6.col-lg-4.col-xl-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}

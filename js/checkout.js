@@ -108,12 +108,10 @@ async function sendOrderEmail(formData) {
 
 // Procesar pedido exitoso
 function processSuccessfulOrder() {
+    
     // Actualizar stock
     cart.forEach(cartItem => {
-        const product = products.find(p => p.id === cartItem.id);
-        if (product) {
-            product.stock -= cartItem.quantity;
-        }
+        updateProductStock(cartItem.id, cartItem.quantity);
     });
     
     // Mostrar confirmación
