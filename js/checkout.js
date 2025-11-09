@@ -53,12 +53,12 @@ function formatOrderItems() {
 
 // Función CORREGIDA para enviar el correo
 async function sendOrderEmail(formData) {
-    console.log('🔄 Iniciando envío de correo...');
+    // console.log(' Iniciando envío de correo...');
     
-    // EMAIL FIJO para pruebas - USA TU EMAIL REAL
-    const toEmail = 'tu_email_real@gmail.com'; // ⚠️ REEMPLAZA CON TU EMAIL
     
-    console.log('📍 Email destino:', toEmail);
+    const toEmail = 'samuelbello482@gmail.com'; // 
+    
+    console.log(' Email destino:', toEmail);
     
     // Preparar datos del pedido
     const orderData = {
@@ -72,9 +72,9 @@ async function sendOrderEmail(formData) {
         customer_address: `${formData.customer_address}, ${formData.customer_city}`
     };
     
-    // Parámetros CORREGIDOS - INCLUYE to_email SIEMPRE
+    // Parámetros
     const templateParams = {
-        to_email: toEmail, // ⚠️ ESTE CAMPO ES OBLIGATORIO
+        to_email: toEmail,
         customer_name: orderData.customer_name,
         customer_email: orderData.customer_email,
         customer_phone: orderData.customer_phone,
@@ -85,7 +85,7 @@ async function sendOrderEmail(formData) {
         order_items: orderData.order_items
     };
     
-    console.log('📤 Enviando correo con parámetros:', templateParams);
+    // console.log(' Enviando correo con parámetros:', templateParams);
     
     try {
         const response = await emailjs.send(
@@ -94,11 +94,11 @@ async function sendOrderEmail(formData) {
             templateParams
         );
         
-        console.log('✅ Correo enviado exitosamente!');
+        console.log(' Correo enviado exitosamente!');
         return response;
         
     } catch (error) {
-        console.error('❌ Error al enviar correo:', error);
+        console.error('  Error al enviar correo:', error);
         if (error.text) {
             console.error('Mensaje de error:', error.text);
         }
