@@ -1,0 +1,27 @@
+/* Estilos específicos para la página de productos */
+#products-container {
+    min-height: 400px;
+}
+
+.search-filter-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.product-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.price-tag {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #198754;
+}
+
+.category-badge {
+    font-size: 0.75rem;
+}   
