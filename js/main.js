@@ -19,25 +19,6 @@ function saveCartToStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// Cargar componentess
-function loadComponents() {
-    // Cargar navbar
-    fetch('../components/navbar.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('navbar-container').innerHTML = html;
-            updateCartBadge();
-        })
-        .catch(error => console.error('Error cargando navbar:', error));
-
-    // Cargar footer
-    fetch('../components/footer.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('footer-container').innerHTML = html;
-        })
-        .catch(error => console.error('Error cargando footer:', error));
-}
 
 // Actualizar badge del carrito
 function updateCartBadge() {
