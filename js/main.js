@@ -19,7 +19,7 @@ function saveCartToStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// Cargar componentes comunes
+// Cargar componentess
 function loadComponents() {
     // Cargar navbar
     fetch('../components/navbar.html')
