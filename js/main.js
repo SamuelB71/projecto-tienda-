@@ -118,8 +118,7 @@ function addToCart(productId) {
 
 // Inicializar aplicación
 function initApp() {
-    console.log('Inicializando aplicación...');
-    loadComponents();
+    // console.log('Inicializando aplicación...');
     initEmailJS();
 }
 
