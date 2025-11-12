@@ -33,9 +33,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="contacto.html">Contacto</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil.html">Mi Cuenta</a>
+                    </li>
                 </ul>
-                <div class="d-flex">
-                    <a href="carrito.html" class="btn btn-outline-light position-relative">
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Estado de autenticación -->
+                    <div id="auth-status" class="text-light me-3">
+                        <span id="user-email"></span>
+                    </div>
+                    <button id="logout-btn" class="btn btn-outline-light btn-sm d-none">
+                        Cerrar Sesión
+                    </button>
+                    <button id="login-btn" class="btn btn-outline-light btn-sm">
+                        Iniciar Sesión
+                    </button>
+                    <a href="pages/carrito.html" class="btn btn-outline-light position-relative">
                         <i class="bi bi-cart"></i> Carrito
                         <span id="cart-badge" class="cart-badge">0</span>
                     </a>

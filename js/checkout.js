@@ -107,25 +107,45 @@ async function sendOrderEmail(formData) {
 }
 
 // Procesar pedido exitoso
-function processSuccessfulOrder() {
-    
-    // Actualizar stock
-    cart.forEach(cartItem => {
-        updateProductStock(cartItem.id, cartItem.quantity);
-    });
-    
-    // Mostrar confirmación
-    showNotification('¡Pedido realizado con éxito! Se ha enviado un correo de confirmación.', 'success');
-    
-    // Limpiar carrito
-    cart = [];
-    localStorage.removeItem('cart');
-    updateCartBadge();
-    
-    // Redirigir a la página de inicio después de 3 segundos
-    setTimeout(() => {
-        window.location.href = '../index.html';
-    }, 3000);
+// En processSuccessfulOrder, después de enviar el email:
+async function processSuccessfulOrder(formData) {
+    try {
+        // 1. Enviar email (existente)
+        await sendOrderEmail(formData);
+        
+        // 2. Guardar en Supabase si el usuario está logueado
+        const user = await supabaseAuth.getCurrentUser();
+        if (user) {
+            const orderData = {
+                customer_name: formData.customer_name,
+                customer_email: formData.customer_email,
+                customer_phone: formData.customer_phone,
+                customer_address: `${formData.customer_address}, ${formData.customer_city}, ${formData.customer_zip}`,
+                order_total: document.getElementById('checkout-total').textContent,
+                order_items: cart
+            };
+            
+            await supabaseDB.saveOrder(orderData);
+        }
+        
+        // 3. Actualizar stock y limpiar carrito (existente)
+        cart.forEach(cartItem => {
+            updateProductStock(cartItem.id, cartItem.quantity);
+        });
+        
+        cart = [];
+        localStorage.removeItem('cart');
+        updateCartBadge();
+        
+        showNotification('¡Pedido realizado con éxito!', 'success');
+        setTimeout(() => {
+            window.location.href = '../index.html';
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error en checkout:', error);
+        showNotification('Error al procesar el pedido', 'error');
+    }
 }
 
 // Configurar formulario de checkout
